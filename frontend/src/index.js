@@ -4,11 +4,25 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import Home from './component/page/Home';
+import Menu from './component/page/Menu';
+import About from './component/page/About';
+import Contact from './component/page/Contact';
+import Login from './component/page/Login';
+import NewProduct from './component/page/NewProduct';
+import Signup from './component/page/Signup';
 
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<App />}>
+    <Route path='/' element={<App/>}>
+        <Route index element={<Home />} />
+        <Route path='menu' element={<Menu />} />
+        <Route path='about' element={<About />} />
+        <Route path='contact' element={<Contact />} />
+        <Route path='login' element={<Login />} />
+        <Route path='newproduct' element={<NewProduct />} />
+        <Route path='signup' element={<Signup />} />
 
     </Route>
   )

@@ -3,6 +3,7 @@ import loginSignupImage from "../assets/login-animation.gif";
 import { Link, useNavigate } from "react-router-dom";
 import { BiShow, BiHide } from "react-icons/bi";
 import { ImageToBase64 } from "../../utility/ImageToBase64";
+import {toast} from 'react-hot-toast';
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -65,9 +66,27 @@ const Signup = () => {
           })
 
           const dataRes = await fetchData.json();
-          console.log(dataRes)
-          alert("successful");
-            // navigate("/login")
+          // alert(dataRes.message)
+          if(dataRes){
+            toast.success(dataRes.message, {
+              style: {
+                background: '#4caf50', // Custom background color
+                color: '#ffffff',      // Custom text color
+              }
+            });
+           
+          }else{
+            toast.success(dataRes.message, {
+              style: {
+                background: '#a31212', // Custom background color
+                color: '#ffffff',      // Custom text color
+              }
+            });
+            navigate("/login")
+
+          }
+          // alert("successful");
+            
         }else{
             alert("password and confirm password are not matched")
         }

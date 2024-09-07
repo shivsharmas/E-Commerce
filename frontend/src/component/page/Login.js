@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import loginSignupImage from "../assets/login-animation.gif";
 import { Link } from "react-router-dom";
 import { BiShow, BiHide } from "react-icons/bi";
+import {toast} from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRedux } from "../../redux/userSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,6 +13,14 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const navigate = useNavigate();
+
+  const userData = useSelector(state => state);
+  console.log(userData.user);
+
+  const dispatch = useDispatch();
+
 
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
@@ -26,12 +38,30 @@ const Login = () => {
     console.log(data)
   }
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault();
     const { email, password} = data;
     if(email && password) {
-      alert("successful")
-    }else{
+      const fetchData = await fetch(`${process.env.REACT_APP_SERVER_DOMAIN}/login`, {
+        method:'POST',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body : JSON.stringify(data)
+      })
+
+      const dataRes = await fetchData.json();
+      console.log(dataRes);
+      toast(userData.user.firstName+ dataRes.message)
+
+      if(dataRes.alert){
+        dispatch(loginRedux(dataRes))
+        navigate("/")
+      }
+      console.log(userData)
+
+    }
+    else{
         alert("please enter required field");
     }
   }
@@ -76,7 +106,7 @@ const Login = () => {
 
 
           <button type="submit" className="w-full max-w-[150px] m-auto bg-red-500  hover:bg-red-600 text-white text-xl font-medium text-center px-3 py-1 mt-4 items-center rounded-full cursor-pointer">
-            Sign Up
+            Login
           </button>
         </form>
         <p className="text-left text-sm mt-3 mb-1">
